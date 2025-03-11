@@ -170,6 +170,10 @@ class LeiGod:
         """检查加速状态并根据条件自动暂停"""
         log_data = self.log()
         self.logger.debug(f"当前加速状态: {log_data}")
+
+        if log_data.get('recover_tag') == '活动时长自动开启':
+            self.logger.info("活动时长自动开启，无需暂停")
+            return
         
         # 检查是否正在加速中（没有暂停时间表示正在加速）
         if log_data.get('pause_time') is not None:
