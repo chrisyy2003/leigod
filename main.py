@@ -195,10 +195,12 @@ class LeiGod:
             self.logger.info(f"已加速时间: {acceleration_hours}h {acceleration_minutes}m {acceleration_seconds}s")
             
             # 判断条件：
-            # 1. 如果加速开始时间在19-24点之间，且当前时间已过凌晨1点，则暂停
+            # 1. 如果加速开始时间在19-24点之间，且当前时间已过凌晨1点，且日期已经是第二天，则暂停
             recover_hour = recover_time.hour
-            if 19 <= recover_hour <= 23 and current_hour > 1:
-                self.logger.info("满足自动暂停条件：晚间开始加速且已过凌晨1点")
+            # 判断是否是第二天
+            is_next_day = now.date() > recover_time.date()
+            if 19 <= recover_hour <= 23 and current_hour > 1 and is_next_day:
+                self.logger.info("满足自动暂停条件：晚间开始加速且已过第二天凌晨1点")
                 self.pause()
                 return
                         
