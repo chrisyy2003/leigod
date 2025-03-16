@@ -199,14 +199,14 @@ class LeiGod:
             recover_hour = recover_time.hour
             # 判断是否是第二天
             is_next_day = now.date() > recover_time.date()
-            if 19 <= recover_hour <= 23 and current_hour >= 1 and is_next_day:
-                self.logger.info("满足自动暂停条件：晚间开始加速且已过第二天凌晨1点")
+            if 19 <= recover_hour <= 23 and is_next_day:
+                self.logger.success("满足自动暂停条件：晚间开始加速且已过第二天凌晨")
                 self.pause()
                 return
                         
             # 额外条件：如果加速时间超过6小时，无论什么时间都暂停
             if total_seconds >= 3600 * 6:  # 6小时
-                self.logger.info(f"满足自动暂停条件：加速时间超过6小时")
+                self.logger.success(f"满足自动暂停条件：加速时间超过6小时")
                 self.pause()
                 return
 
