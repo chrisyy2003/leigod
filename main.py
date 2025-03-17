@@ -182,7 +182,6 @@ class LeiGod:
         
         # 获取当前时间
         now = datetime.datetime.now()
-        current_hour = now.hour
         
         # 解析加速开始时间
         try:
@@ -199,8 +198,8 @@ class LeiGod:
             recover_hour = recover_time.hour
             # 判断是否是第二天
             is_next_day = now.date() > recover_time.date()
-            if 19 <= recover_hour <= 23 and current_hour >= 1 and is_next_day:
-                self.logger.info("满足自动暂停条件：晚间开始加速且已过第二天凌晨1点")
+            if 19 <= recover_hour <= 23 and now.minute >= 30 and is_next_day:
+                self.logger.info("满足自动暂停条件：晚间开始加速且已过第二天凌晨00:30")
                 self.pause()
                 return
                         
