@@ -193,12 +193,22 @@ class LeiGod:
             acceleration_seconds = int(total_seconds % 60)
             self.logger.info(f"已加速时间: {acceleration_hours}h {acceleration_minutes}m {acceleration_seconds}s")
             
-            # 判断条件：
-            # 1. 如果加速开始时间在19-24点之间，且当前时间已过凌晨1点，且日期已经是第二天，则暂停
             recover_hour = recover_time.hour
-            # 判断是否是第二天
             is_next_day = now.date() > recover_time.date()
-            if 19 <= recover_hour <= 23 and now.minute >= 30 and is_next_day:
+            
+            # 获取加速开始时间的星期几（0是周一，6是周日）
+            recover_weekday = recover_time.weekday()
+            # 获取当前时间的小时
+            current_hour = now.hour
+            
+            # 周五(4)和周六(5)特殊处理，延长至凌晨2点后
+            if recover_weekday in [4, 5]:  # 周五或周六
+                if is_next_day and current_hour >= 1:
+                    self.logger.info("满足自动暂停条件：周末晚间开始加速且已过第二天凌晨2:00")
+                    self.pause()
+                    return
+            # 非周末正常处理
+            elif is_next_day and now.minute >= 30:
                 self.logger.info("满足自动暂停条件：晚间开始加速且已过第二天凌晨00:30")
                 self.pause()
                 return
