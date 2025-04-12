@@ -204,12 +204,12 @@ class LeiGod:
             # 周五(4)和周六(5)特殊处理，延长至凌晨1点后
             if recover_weekday in [4, 5]:  # 周五或周六
                 if is_next_day and current_hour >= 1:
-                    self.logger.info("满足自动暂停条件：周末晚间开始加速且已过第二天凌晨1:00")
+                    self.logger.success("满足自动暂停条件：周末晚间开始加速且已过第二天凌晨1:00")
                     self.pause()
                     return
             # 非周末正常处理
             elif is_next_day and now.minute >= 30:
-                self.logger.info("满足自动暂停条件：晚间开始加速且已过第二天凌晨00:30")
+                self.logger.success("满足自动暂停条件：晚间开始加速且已过第二天凌晨00:30")
                 self.pause()
                 return
                         
